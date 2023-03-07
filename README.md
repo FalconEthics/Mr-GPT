@@ -2,7 +2,7 @@
 Mr. GPT is a Discord bot that uses OpenAI's GPT 3.5 learning model to generate text in response to user commands. The bot uses OpenAI's API, Discord's API, and JavaScript for building it. The bot can generate a wide range of responses to user inputs, making it a fun and interactive addition to any Discord server.
 
 Installation
-Clone the repository using git clone https://github.com/yourusername/mr-gpt-discord-bot.git
+Clone the repository using git clone https://github.com/FalconEthics/Mr-GPT.git
 Navigate to the project directory using cd mr-gpt-discord-bot
 Install dependencies using npm install
 Set up a .env file with the following variables:
