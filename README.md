@@ -106,6 +106,8 @@ Step 6: Test the bot
 To test the bot, simply type a message starting with the "$" symbol in one of your Discord channels. The bot should respond with a generated message based on the input text you provided. If everything is working correctly, you should be able to have a conversation with ChatGPT using your Discord server!
 
 I hope this guide helped, for furthur more details contact me via <a href="https://www.linkedin.com/in/soumik-das-profile/">LinkedIn</a> 
+<br>
+<br>
 
 
 
