@@ -10,178 +10,177 @@
 <br />
 <div align="center">
   <a href="https://github.com/FalconEthics/Mr-GPT">
-    <img src="./logo.svg" alt="Logo" width="80" height="80">
+    <img src="public/logo.svg" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Mr-GPT</h3>
+<h3 align="center">Mr-GPT: Discord AI Chatbot</h3>
 
   <p align="center">
-    - Mr. GPT is a Discord bot that uses OpenAI's GPT 3.5 learning model to generate text in response to user commands. The bot uses OpenAI's API, Discord's API, and JavaScript for building it. The bot can generate a wide range of responses to user inputs, making it a fun and interactive addition to any Discord server.
+    A modern Discord bot powered by OpenAI's GPT-3.5/4, with persistent conversation, rate limiting, and MongoDB support.
     <br />
-    <a href=#installation><strong>Explore the docs »</strong></a>
+    <a href="#getting-started"><strong>Get Started »</strong></a>
     <br />
     <br />
-    <a href="#acknowledgments">View Demo</a>
-    ·
     <a href="https://github.com/FalconEthics/Mr-GPT/issues">Report Bug</a>
     ·
     <a href="https://github.com/FalconEthics/Mr-GPT/issues">Request Feature</a>
   </p>
 </div>
 
-[![Product Name Screen Shot][product-screenshot]](https://keeper-app-falconethics.vercel.app/)
+## About The Project
 
+Mr-GPT is a Discord bot that leverages OpenAI's latest GPT models to generate intelligent, context-aware responses to
+user queries. It supports slash commands, persistent conversation history (MongoDB), user rate limiting, and robust
+logging. Ideal for communities, study groups, and anyone who wants a smart AI assistant in their Discord server.
 
-<!-- Installation -->
-## Installation
+---
 
-Step 1: Create a new Discord bot
+## Getting Started
 
-Firstly, you need to create a new Discord bot. You can do this by going to the Discord Developer Portal (https://discord.com/developers/applications) and creating a new application. Give your application a name and click on "Create".
+### Prerequisites
 
-Once you've created your application, click on the "Bot" tab on the left-hand side of the page and click on "Add Bot". This will create a new bot account for your application.
+- Node.js v18 or newer
+- A Discord bot token & client ID ([Discord Developer Portal](https://discord.com/developers/applications))
+- OpenAI API key ([OpenAI Platform](https://platform.openai.com/))
+- MongoDB Atlas URI ([MongoDB Atlas](https://www.mongodb.com/cloud/atlas))
 
-Step 2: Add the bot to your Discord server
+### Installation
 
-Next, you need to add the bot to your Discord server. You can do this by going to the "OAuth2" tab on the left-hand side of the page, selecting the "bot" scope, and then selecting the permissions you want the bot to have. Once you've selected the permissions, you can copy the URL and paste it into your web browser. This will take you to a page where you can select the server you want to add the bot to.
+1. **Clone the repo**
+   ```sh
+   git clone https://github.com/FalconEthics/Mr-GPT.git
+   cd Mr-GPT
+   ```
+2. **Install dependencies**
+   ```sh
+   npm install
+   ```
+3. **Configure environment variables**
+   Create a `.env` file in the root directory:
+   ```env
+   DISCORD_TOKEN=your_discord_bot_token
+   DISCORD_CLIENT_ID=your_discord_client_id
+   OPENAI_KEY=your_openai_api_key
+   OPENAI_ORG=your_openai_organization_id
+   MONGO_URI=your_mongodb_connection_string
+   ```
 
-Step 3: Install the necessary dependencies
+---
 
-You'll need to install the necessary dependencies for your bot to work. The main one you'll need is the Discord.py library, which you can install using pip.
+## Usage
 
-Open your command prompt or terminal and run the following command:
-```s
-pip install discord.py
-```
-Step 4: Write the code to interact with ChatGPT
+- Invite your bot to your Discord server using the OAuth2 URL from the Discord Developer Portal.
+- Use the `/chatgpt` slash command to interact with the bot.
+- The bot maintains conversation context and rate limits users to prevent abuse.
 
-Next, you need to write the code to interact with ChatGPT. Here's some sample code to get you started:
-```s
-import discord
-import openai
-import os
+---
 
-client = discord.Client()
+## Deployment
 
-@client.event
-async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
-    openai.api_key = "YOUR_API_KEY"
+### Docker (Recommended)
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
+1. **Build and run with Docker**
+   ```sh
+   docker build -t mr-gpt .
+   docker run --env-file .env mr-gpt
+   ```
 
-    if message.content.startswith('$'):
-        input_text = message.content[1:]
-        response = openai.Completion.create(
-            engine="davinci",
-            prompt=input_text,
-            temperature=0.5,
-            max_tokens=100,
-            n=1,
-            stop=None,
-            frequency_penalty=0,
-            presence_penalty=0
-        )
-        output_text = response.choices[0].text
-        await message.channel.send(output_text)
+### Render.com
 
-client.run('YOUR_DISCORD_BOT_TOKEN')
+1. Push your code to GitHub.
+2. Create a new Web Service on [Render](https://render.com/).
+3. Connect your GitHub repo and select this project.
+4. Set the environment variables as above in the Render dashboard.
+5. Add a MongoDB Atlas database and use its connection string for `MONGO_URI`.
+6. Render will build and run your bot using the Dockerfile.
 
-```
-Here, we're using the OpenAI API to generate a response based on the input text provided by the user. We're using the "davinci" engine, which is the most powerful and accurate engine provided by OpenAI. You'll need to replace "YOUR_API_KEY" with your actual OpenAI API key and "YOUR_DISCORD_BOT_TOKEN" with the token for your Discord bot.
+### MongoDB Atlas Setup
 
-Step 5: Run the bot
+- Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) and create a free cluster.
+- Add a database user and whitelist your IP or set to allow all IPs (for bots).
+- Copy the connection string and use it as `MONGO_URI`.
 
-Finally, you need to run the bot. Open your command prompt or terminal and navigate to the directory where your code is saved. Then, run the following command:
-```s
-python your_file_name.py
-```
-Replace "your_file_name.py" with the name of your Python file. If everything is set up correctly, your bot should start running and you should see a message in your Discord server indicating that the bot is online.
+---
 
-Step 6: Test the bot
+## Key Features
 
-To test the bot, simply type a message starting with the "$" symbol in one of your Discord channels. The bot should respond with a generated message based on the input text you provided. If everything is working correctly, you should be able to have a conversation with ChatGPT using your Discord server!
+- **Slash Commands**: Modern Discord interaction with `/chatgpt`.
+- **Persistent Conversation**: Remembers user context using MongoDB.
+- **Rate Limiting**: Prevents abuse by limiting requests per user.
+- **Latest OpenAI Models**: Uses GPT-3.5-turbo or GPT-4.
+- **Logging & Error Tracking**: Winston logger for robust monitoring.
+- **Easy Deployment**: Dockerfile and Render support.
 
-I hope this guide helped, for furthur more details contact me via <a href="https://www.linkedin.com/in/soumik-das-profile/">LinkedIn</a> 
-<br>
-<br>
+---
 
-
-
-<!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+Contributions are welcome! Please fork the repo and submit a pull request. For major changes, open an issue first to
+discuss what you would like to change.
 
 1. Fork the Project
-2. Create your Feature Branch 
- ```sh
-git checkout -b feature/AmazingFeature
-```
-3. Commit your Changes 
-```s
-git commit -m Add some AmazingFeature
-```
-4. Push to the Branch 
-```s
-git push origin feature/AmazingFeature
-```
+2. Create your Feature Branch
+   ```sh
+   git checkout -b feature/AmazingFeature
+   ```
+3. Commit your Changes
+   ```sh
+   git commit -m "Add some AmazingFeature"
+   ```
+4. Push to the Branch
+   ```sh
+   git push origin feature/AmazingFeature
+   ```
 5. Open a Pull Request
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+---
 
-
-
-<!-- LICENSE -->
 ## License
 
-Distributed under the GNU License. See `LICENSE.txt` for more information.
+Distributed under the GNU License. See [`LICENSE`](./LICENSE) for more information.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTACT -->
 ## Contact
 
-<ul>
-<li><a href="https://www.linkedin.com/in/soumik-das-profile/"> LinkedIn Profile</a></li>
-<li><a href="https://mrsoumikdas.com"> Portfolio Site</a></li>
-<li><a href="https://twitter.com/Mr_Soumik_Das"> Twitter Handle</a></li>
-</ul>
+[![LinkedIn][linkedin-badge]][linkedin-url]
+[![Portfolio][portfolio-badge]][portfolio-url]
+[![Gmail][gmail-badge]][gmail-url]
 
-~ wanna checkout my other projects: [https://github.com/FalconEthics](https://github.com/FalconEthics)
+Soumik Das - [mrsoumikdas.com](https://mrsoumikdas.com/)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Project Link: [https://github.com/FalconEthics/Mr-GPT](https://github.com/FalconEthics/Mr-GPT)
 
+<!-- MARKDOWN LINKS & IMAGES -->
 
+[contributors-shield]: https://img.shields.io/github/contributors/FalconEthics/Mr-GPT.svg?style=for-the-badge
 
-## Acknowledgments
+[contributors-url]: https://github.com/FalconEthics/Mr-GPT/graphs/contributors
 
- ~The server it is onn right now is a private server of me and my classmates because right now i am hosting the bot with free servers and they have usage limitations, comment below if you guys are interested in a public server with ai implementations like this and many more exciting features by me and my friends from UOL. We will release a separate server for that if there are enough people to utilize the features.
+[forks-shield]: https://img.shields.io/github/forks/FalconEthics/Mr-GPT.svg?style=for-the-badge
 
- <!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/FalconEthics/Keeper-app.svg?style=for-the-badge
-[contributors-url]: https://github.com/FalconEthics/keeper-app/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/FalconEthics/Keeper-app.svg?style=for-the-badge
-[forks-url]: https://github.com/FalconEthics/keeper-app/network/members
-[stars-shield]: https://img.shields.io/github/stars/FalconEthics/Keeper-app.svg?style=for-the-badge
-[stars-url]: https://github.com/FalconEthics/keeper-app/stargazers
-[issues-shield]: https://img.shields.io/github/issues/FalconEthics/Keeper-app.svg?style=for-the-badge
+[forks-url]: https://github.com/FalconEthics/Mr-GPT/network/members
 
-[issues-url]: https://github.com/FalconEthics/keeper-app/issues
-[license-shield]: https://img.shields.io/github/license/FalconEthics/Keeper-app.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/FalconEthics/Mr-GPT.svg?style=for-the-badge
 
-[license-url]: https://github.com/FalconEthics/keeper-app/blob/main/LICENSE
+[stars-url]: https://github.com/FalconEthics/Mr-GPT/stargazers
+
+[issues-shield]: https://img.shields.io/github/issues/FalconEthics/Mr-GPT.svg?style=for-the-badge
+
+[issues-url]: https://github.com/FalconEthics/Mr-GPT/issues
+
+[license-shield]: https://img.shields.io/github/license/FalconEthics/Mr-GPT.svg?style=for-the-badge
+
+[license-url]: https://github.com/FalconEthics/Mr-GPT/blob/main/LICENSE
+
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 
 [linkedin-url]: https://www.linkedin.com/in/soumik-das-profile/
 
-[product-screenshot]: https://raw.githubusercontent.com/FalconEthics/Mr-GPT/main/screenshot.png
+[linkedin-badge]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
+
+[portfolio-badge]: https://img.shields.io/badge/Portfolio-255E63?style=for-the-badge&logo=About.me&logoColor=white
+
+[portfolio-url]: https://mrsoumikdas.com/
+
+[gmail-badge]: https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white
+
+[gmail-url]: mailto:mail2soumikdas@gmail.com
